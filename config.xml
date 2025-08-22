@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.example.frota" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>FrotaVeiculos</name>
+    <description>
+        Aplicativo para controle de frota de veículos
+    </description>
+    <author email="dev@example.com" href="http://example.com">
+        Sua Equipe
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-navigation href="https://api-notas-csu2.onrender.com/*" />
+    
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splash-screen.png" />
+    </platform>
+</widget>

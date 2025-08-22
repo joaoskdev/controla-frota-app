@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Controle de Frota</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center mb-4">
+                    <h1 class="display-4">Controle de Frota</h1>
+                    <p class="lead">Sistema de gerenciamento de veículos</p>
+                </div>
+                
+                <div class="d-grid gap-3">
+                    <button id="btnCadastrarVeiculo" class="btn btn-primary btn-lg">Cadastrar Veículo</button>
+                    <button id="btnListarVeiculos" class="btn btn-secondary btn-lg">Listar Veículos</button>
+                    <button id="btnCadastrarProduto" class="btn btn-success btn-lg">Cadastrar Produto</button>
+                    <button id="btnRegistrarManutencao" class="btn btn-warning btn-lg">Registrar Manutenção</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal container -->
+    <div id="modalContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
