@@ -14,7 +14,156 @@ function onDeviceReady() {
     document.getElementById('btnEditarVeiculo').addEventListener('click', editarVeiculo);
     document.getElementById('btnExcluirVeiculo').addEventListener('click', excluirVeiculo);
     document.getElementById('btnManutencao').addEventListener('click', showManutencao);
-    document.getElementById('btnProdutos').addEventListener('click', showProdutos);
+    document.getElementById('btnCatalogoProdutos').addEventListener('click', showCatalogoProdutos);
+}
+
+function adicionarProdutoAoVeiculo(catalogoProdutoId) {
+    const form = `
+        <form id="adicionarProdutoForm">
+            <div class="mb-3">
+                <label class="form-label">Veículo</label>
+                <input type="text" class="form-control" value="${veiculoAtual.placa} - ${veiculoAtual.marca} ${veiculoAtual.modelo}" disabled>
+            </div>
+            <div class="mb-3">
+                <label for="quantidadeProduto" class="form-label">Quantidade *</label>
+                <input type="number" class="form-control" id="quantidadeProduto" required min="1" value="1">
+            </div>
+            <div class="mb-3">
+                <label for="observacoesProduto" class="form-label">Observações</label>
+                <textarea class="form-control" id="observacoesProduto" rows="2" placeholder="Opcional"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar ao Veículo</button>
+        </form>
+    `;
+    
+    showModal('Adicionar Produto ao Veículo', form);
+    
+    setTimeout(() => {
+        const formElement = document.getElementById('adicionarProdutoForm');
+        if (formElement) {
+            formElement.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const produto = {
+                    tipo: 'produto',
+                    placaVeiculo: veiculoAtual.placa,
+                    catalogoProdutoId: catalogoProdutoId,
+                    quantidade: parseInt(document.getElementById('quantidadeProduto').value),
+                    observacoes: document.getElementById('observacoesProduto').value
+                };
+                
+                salvarDados(produto, 'Produto adicionado ao veículo com sucesso!');
+            });
+        }
+    }, 100);
+}
+
+function showNovoProdutoCatalogo() {
+    const form = `
+        <form id="novoProdutoCatalogoForm">
+            <div class="mb-3">
+                <label for="tituloProduto" class="form-label">Título do Produto *</label>
+                <input type="text" class="form-control" id="tituloProduto" required>
+            </div>
+            <div class="mb-3">
+                <label for="descricaoProduto" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricaoProduto" rows="3" placeholder="Descreva o produto..."></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="categoriaProduto" class="form-label">Categoria</label>
+                <input type="text" class="form-control" id="categoriaProduto" placeholder="Ex: Lubrificantes, Filtros, etc.">
+            </div>
+            <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
+        </form>
+    `;
+    
+    showModal('Novo Produto no Catálogo', form);
+    
+    setTimeout(() => {
+        const formElement = document.getElementById('novoProdutoCatalogoForm');
+        if (formElement) {
+            formElement.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const produtoCatalogo = {
+                    titulo: document.getElementById('tituloProduto').value,
+                    descricao: document.getElementById('descricaoProduto').value,
+                    categoria: document.getElementById('categoriaProduto').value
+                };
+                
+                // Salvar no catálogo
+                fetch(`${API_URL}/catalogo-produtos`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(produtoCatalogo)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    showAlert('Produto cadastrado no catálogo com sucesso!', 'Sucesso');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('myModal'));
+                    if (modal) modal.hide();
+                    showCatalogoProdutos(); // Recarregar catálogo
+                })
+                .catch(error => {
+                    console.error('Erro ao cadastrar produto:', error);
+                    showAlert('Erro ao cadastrar produto', 'Erro');
+                });
+            });
+        }
+    }, 100);
+}
+
+function showCatalogoProdutos() {
+    fetch(`${API_URL}/catalogo-produtos`)
+        .then(response => response.json())
+        .then(produtos => {
+            let content = `
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Catálogo de Produtos</h5>
+                    <button class="btn btn-sm btn-success" onclick="showNovoProdutoCatalogo()">
+                        <i class="bi bi-plus"></i> Novo
+                    </button>
+                </div>
+            `;
+
+            if (produtos.length === 0) {
+                content += `
+                    <div class="text-center py-4">
+                        <i class="bi bi-journal-x" style="font-size: 3rem;"></i>
+                        <p class="mt-2">Nenhum produto no catálogo</p>
+                    </div>
+                `;
+            } else {
+                content += '<div class="list-group">';
+                produtos.forEach(produto => {
+                    content += `
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">${produto.titulo}</h6>
+                                    ${produto.descricao ? `<p class="mb-1 small">${produto.descricao}</p>` : ''}
+                                    ${produto.categoria ? `<span class="badge bg-secondary">${produto.categoria}</span>` : ''}
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="adicionarProdutoAoVeiculo('${produto._id}')">
+                                        <i class="bi bi-cart-plus"></i> Adicionar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                content += '</div>';
+            }
+
+            showModal('Catálogo de Produtos', content);
+        })
+        .catch(error => {
+            console.error('Erro ao carregar catálogo:', error);
+            showAlert('Erro ao carregar catálogo de produtos', 'Erro');
+        });
 }
 
 function carregarVeiculo() {
@@ -73,6 +222,16 @@ function carregarContadores() {
         .catch(error => {
             console.error('Erro ao carregar produtos:', error);
         });
+
+    fetch(`${API_URL}/produtos/${veiculoAtual.placa}`)
+        .then(response => response.json())
+        .then(produtos => {
+            const totalItens = produtos.reduce((total, produto) => total + produto.quantidade, 0);
+            document.getElementById('contadorProdutos').textContent = `${produtos.length} tipos | ${totalItens} itens`;
+        })
+        .catch(error => {
+            console.error('Erro ao carregar produtos:', error);
+        });
 }
 
 function carregarManutencoesRecentes() {
@@ -118,27 +277,36 @@ function carregarManutencoesRecentes() {
 function carregarProdutos() {
     fetch(`${API_URL}/produtos/${veiculoAtual.placa}`)
         .then(response => response.json())
-        .then(produtos => {
+        .then(async (produtos) => {
             const listaProdutos = document.getElementById('listaProdutos');
             listaProdutos.innerHTML = '';
             
             if (produtos.length === 0) {
-                listaProdutos.innerHTML = '<div class="text-center text-muted py-3">Nenhum produto cadastrado</div>';
+                listaProdutos.innerHTML = '<div class="text-center text-muted py-3">Nenhum produto no veículo</div>';
                 return;
             }
             
-            produtos.forEach(produto => {
-                const item = `
-                    <div class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">${produto.nome}</h6>
-                            <span class="badge bg-primary rounded-pill">${produto.quantidade}x</span>
+            // Buscar informações do catálogo para cada produto
+            for (const produto of produtos) {
+                try {
+                    const response = await fetch(`${API_URL}/catalogo-produtos/${produto.catalogoProdutoId}`);
+                    const produtoCatalogo = await response.json();
+                    
+                    const item = `
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">${produtoCatalogo.titulo}</h6>
+                                <span class="badge bg-primary rounded-pill">${produto.quantidade}x</span>
+                            </div>
+                            ${produtoCatalogo.descricao ? `<p class="mb-1 small">${produtoCatalogo.descricao}</p>` : ''}
+                            ${produto.observacoes ? `<small class="text-muted">Obs: ${produto.observacoes}</small>` : ''}
                         </div>
-                        ${produto.descricao ? `<p class="mb-1">${produto.descricao}</p>` : ''}
-                    </div>
-                `;
-                listaProdutos.innerHTML += item;
-            });
+                    `;
+                    listaProdutos.innerHTML += item;
+                } catch (error) {
+                    console.error('Erro ao carregar detalhes do produto:', error);
+                }
+            }
             
             document.getElementById('produtosSection').style.display = 'block';
         })
