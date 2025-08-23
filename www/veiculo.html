@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalhes do Veículo</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container mt-3">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <button id="btnVoltar" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Voltar
+            </button>
+            <h4 id="tituloVeiculo" class="m-0 text-center">Detalhes do Veículo</h4>
+            <div style="width: 48px;"></div> <!-- Espaçamento para alinhamento -->
+        </div>
+
+        <!-- Card do Veículo -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 id="veiculoInfo" class="card-title"></h5>
+                <p id="veiculoDetalhes" class="card-text"></p>
+                <div class="d-flex gap-2">
+                    <button id="btnEditarVeiculo" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil"></i> Editar
+                    </button>
+                    <button id="btnExcluirVeiculo" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash"></i> Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu de Opções -->
+        <div class="row g-3">
+            <div class="col-6">
+                <div class="card h-100 text-center option-card" id="btnManutencao">
+                    <div class="card-body">
+                        <i class="bi bi-tools" style="font-size: 2rem;"></i>
+                        <h6 class="card-title mt-2">Manutenções</h6>
+                        <small class="text-muted" id="contadorManutencoes">0 registros</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card h-100 text-center option-card" id="btnProdutos">
+                    <div class="card-body">
+                        <i class="bi bi-box-seam" style="font-size: 2rem;"></i>
+                        <h6 class="card-title mt-2">Produtos</h6>
+                        <small class="text-muted" id="contadorProdutos">0 itens</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Manutenções Recentes -->
+        <div class="mt-4" id="manutencoesSection" style="display: none;">
+            <h5>Últimas Manutenções</h5>
+            <div id="listaManutencoes" class="list-group"></div>
+        </div>
+
+        <!-- Lista de Produtos -->
+        <div class="mt-4" id="produtosSection" style="display: none;">
+            <h5>Produtos no Veículo</h5>
+            <div id="listaProdutos" class="list-group"></div>
+        </div>
+    </div>
+
+    <!-- Modal container -->
+    <div id="modalContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/veiculo.js"></script>
+</body>
+</html>

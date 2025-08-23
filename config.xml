@@ -12,9 +12,15 @@
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-navigation href="https://api-notas-csu2.onrender.com/*" />
+    <allow-navigation href="file://*/*" />
     
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splash-screen.png" />
+        <preference name="AndroidInsecureFileModeEnabled" value="true" />
     </platform>
+    
+    <feature name="Notification">
+        <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
+    </feature>
 </widget>

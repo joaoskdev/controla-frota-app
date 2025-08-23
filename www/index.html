@@ -6,23 +6,30 @@
     <title>Controle de Frota</title>
     <link rel="stylesheet" href="css/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="text-center mb-4">
-                    <h1 class="display-4">Controle de Frota</h1>
-                    <p class="lead">Sistema de gerenciamento de veículos</p>
-                </div>
-                
-                <div class="d-grid gap-3">
-                    <button id="btnCadastrarVeiculo" class="btn btn-primary btn-lg">Cadastrar Veículo</button>
-                    <button id="btnListarVeiculos" class="btn btn-secondary btn-lg">Listar Veículos</button>
-                    <button id="btnCadastrarProduto" class="btn btn-success btn-lg">Cadastrar Produto</button>
-                    <button id="btnRegistrarManutencao" class="btn btn-warning btn-lg">Registrar Manutenção</button>
-                </div>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3">Controle de Frota</h1>
+            <button id="btnNovoVeiculo" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Novo Veículo
+            </button>
+        </div>
+
+        <div id="loading" class="text-center my-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
             </div>
+            <p class="mt-2">Carregando veículos...</p>
+        </div>
+
+        <div id="listaVeiculos" class="row"></div>
+        
+        <div id="semVeiculos" class="text-center mt-5" style="display: none;">
+            <i class="bi bi-truck" style="font-size: 3rem;"></i>
+            <h4 class="mt-3">Nenhum veículo cadastrado</h4>
+            <p>Clique no botão acima para adicionar seu primeiro veículo.</p>
         </div>
     </div>
 
