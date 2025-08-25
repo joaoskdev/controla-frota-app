@@ -18,6 +18,12 @@
         <allow-intent href="market:*" />
         <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/screen/android/splash-screen.png" />
         <preference name="AndroidInsecureFileModeEnabled" value="true" />
+        <preference name="SplashMaintainAspectRatio" value="true" />
+        <preference name="SplashScreenDelay" value="3000" />
+        <platform name="android">
+            <splash src="res/screen/android/splash.png" density="port-hdpi" />
+            <splash src="res/screen/android/splash.png" density="port-xhdpi" />
+        </platform>
     </platform>
     
     <feature name="Notification">
